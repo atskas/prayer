@@ -17,6 +17,9 @@ set(SOURCES
         kernel/include/vga_buffer.h
         kernel/include/vga_color.h
         kernel/include/vga_color.h
+        kernel/include/vga.h
+        kernel/include/color.h
+        kernel/vga.cpp
 )
 
 add_executable(prayer ${SOURCES})

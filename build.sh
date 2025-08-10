@@ -10,10 +10,10 @@ nasm -f elf32 kernel/asm/boot.asm -o build/boot.o
 # file compilation
 g++ -ffreestanding -m32 -c kernel/kmain.cpp -o build/kmain.o # kmain.cpp
 g++ -ffreestanding -m32 -c kernel/panic.cpp -o build/panic.o # panic.cpp
-
+g++ -ffreestanding -m32 -c kernel/vga.cpp -o build/vga.o # vga.cpp
 
 # link everything
-ld -m elf_i386 -n -T linker.ld -o build/kernel.elf build/boot.o build/kmain.o build/panic.o
+ld -m elf_i386 -n -T linker.ld -o build/kernel.elf build/boot.o build/kmain.o build/panic.o build/vga.o
 
 # move the .elf
 mv build/kernel.elf isodir/boot/kernel.elf
