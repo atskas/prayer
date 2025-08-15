@@ -20,6 +20,13 @@ set(SOURCES
         kernel/include/vga.h
         kernel/include/color.h
         kernel/vga.cpp
+        kernel/include/inter.h
+        kernel/inter.cpp
+        kernel/include/io.h
+        kernel/include/exc.h
+        kernel/exc.cpp
+        kernel/include/gdt.h
+        kernel/gdt.cpp
 )
 
 add_executable(prayer ${SOURCES})
