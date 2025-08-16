@@ -2,13 +2,15 @@
 #include "../kernel/include/keys.h"
 #include <cstdint>
 
+#include "include/io.h"
+
 static volatile uint16_t* vga_buffer;
 static int cursor_row = 0;
 static int cursor_col = 0;
 static Color fg_color;
 static Color bg_color;
 
-// Sets the background & foreground color
+// Sets the background and foreground color
 void vga_set_color(Color fg, Color bg) {
     fg_color = fg;
     bg_color = bg;
@@ -20,6 +22,14 @@ void vga_init() {
     cursor_row = 0;
     cursor_col = 0;
     vga_set_color(WHITE, BLACK);
+}
+
+void vga_update_cursor() {
+    const uint16_t pos = cursor_row * 80 + cursor_col;
+    outb(0x3D4, 0x0F);
+    outb(0x3D5, pos & 0xFF);
+    outb(0x3D4, 0x0E);
+    outb(0x3D5, (pos >> 8) & 0xFF);
 }
 
 // Print text to the screen
@@ -35,6 +45,7 @@ void vga_print(const char* str) {
             if (cursor_row >= 25) {
                 cursor_row = 24; // Temporarily clamp
             }
+            vga_update_cursor();
             continue;
         }
 
@@ -49,6 +60,7 @@ void vga_print(const char* str) {
                 cursor_row = 24; // Temporarily clamp
             }
         }
+        vga_update_cursor();
     }
 }
 
@@ -65,6 +77,7 @@ void vga_back() {
 
     uint16_t color_byte = (bg_color << 4) | fg_color;
     vga_buffer[cursor_row * 80 + cursor_col] = (color_byte << 8) | ' ';
+    vga_update_cursor();
 }
 
 // To print hex codes

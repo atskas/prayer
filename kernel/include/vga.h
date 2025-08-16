@@ -6,6 +6,9 @@
 // Initiate the VGA buffer
 void vga_init();
 
+// Update the blinking cursor's position
+void vga_update_cursor();
+
 // Print text to the screen
 void vga_print(const char* str);
 
