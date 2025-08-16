@@ -33,3 +33,5 @@
 /.idea
 isodir/boot/kernel.elf
 prayer.iso
+prayer.iso
+isodir/boot/kernel.elf

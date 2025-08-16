@@ -1,6 +1,7 @@
 #include "../kernel/include/inter.h"
 #include "../kernel/include/vga.h"
 #include "../kernel/include/io.h"
+#include "include/keys.h"
 
 // Implemented in `inter_asm.asm`
 extern "C" void irq0_stub();
@@ -54,14 +55,32 @@ void idt_init() {
     asm volatile("sti"); // Enable global interrupts
 }
 
+// Keyboard input handler
 extern "C" void irq1_handler() {
     uint8_t scancode = inb(0x60); // keyboard data port
-    vga_print("IRQ1 handler called!");
+    bool released;
+    const char* key = scancode_to_key(scancode, &released);
+
+    if (released) return;
+
+    // On shift
+    if (key[0] == 'S' && key[1] == 'h')
+        vga_print("\n");
+    else if (key[0] == 'S' && key[1] == 'p') {
+        vga_print(" ");
+    }
+    else if (key[0] == 'E' && key[1] == 'n') {
+        vga_print("\n");
+    }
+    else {
+        vga_print(key);
+    }
+
     outb(0x20, 0x20); // Tell PIC we're done
 }
 
+// Timer handler
 extern "C" void irq0_handler() {
-    vga_print(".");
     outb(0x20, 0x20); // Tell PIC we're done
 }
 

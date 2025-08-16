@@ -1,4 +1,5 @@
 #include "../kernel/include/vga.h"
+#include "../kernel/include/keys.h"
 #include <cstdint>
 
 static volatile uint16_t* vga_buffer;
@@ -51,6 +52,7 @@ void vga_print(const char* str) {
     }
 }
 
+// For printing hex codes
 void vga_print_hex(uint32_t val) {
     const char* hex = "0123456789ABCDEF";
     vga_print("0x");
@@ -59,6 +61,13 @@ void vga_print_hex(uint32_t val) {
         buf[0] = hex[(val >> i) & 0xF];
         vga_print(buf);
     }
+}
+
+extern "C" const char* scancode_to_key(uint8_t scancode, bool* released) {
+    *released = scancode & 0x80;
+    uint8_t code = scancode & 0x7F;
+    if (code < 128) return scancode_table[code];
+    return "UNKNOWN";
 }
 
 
