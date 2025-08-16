@@ -3,6 +3,11 @@
 
 #include "color.h"
 
+extern volatile uint16_t* vga_base;
+
+// Override the VGA base
+void vga_override(void* new_base);
+
 // Initiate the VGA buffer
 void vga_init();
 

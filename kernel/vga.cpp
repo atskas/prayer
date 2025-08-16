@@ -4,21 +4,20 @@
 
 #include "include/io.h"
 
-static volatile uint16_t* vga_buffer;
+volatile uint16_t* vga_base;
 static int cursor_row = 0;
 static int cursor_col = 0;
 static Color fg_color;
 static Color bg_color;
 
-// Sets the background and foreground color
-void vga_set_color(Color fg, Color bg) {
-    fg_color = fg;
-    bg_color = bg;
+// Override the VGA base
+void vga_override(void* new_base) {
+    vga_base = (volatile uint16_t*)new_base;
 }
 
 // Initialise the VGA buffer and all other properties
 void vga_init() {
-    vga_buffer = (uint16_t*)0xB8000;
+    vga_base = (uint16_t*)0xB8000;
     cursor_row = 0;
     cursor_col = 0;
     vga_set_color(WHITE, BLACK);
@@ -30,6 +29,12 @@ void vga_update_cursor() {
     outb(0x3D5, pos & 0xFF);
     outb(0x3D4, 0x0E);
     outb(0x3D5, (pos >> 8) & 0xFF);
+}
+
+// Sets the background and foreground color
+void vga_set_color(Color fg, Color bg) {
+    fg_color = fg;
+    bg_color = bg;
 }
 
 // Print text to the screen
@@ -50,7 +55,7 @@ void vga_print(const char* str) {
         }
 
         uint16_t value = (color_byte << 8) | c;
-        vga_buffer[cursor_row * 80 + cursor_col] = value;
+        vga_base[cursor_row * 80 + cursor_col] = value;
 
         cursor_col++;
         if (cursor_col >= 80) {
@@ -76,7 +81,7 @@ void vga_back() {
     }
 
     uint16_t color_byte = (bg_color << 4) | fg_color;
-    vga_buffer[cursor_row * 80 + cursor_col] = (color_byte << 8) | ' ';
+    vga_base[cursor_row * 80 + cursor_col] = (color_byte << 8) | ' ';
     vga_update_cursor();
 }
 
