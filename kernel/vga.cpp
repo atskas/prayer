@@ -69,6 +69,30 @@ void vga_print(const char* str) {
     }
 }
 
+// For printing a char
+void vga_printc(char c) {
+    uint8_t color_byte = (bg_color << 4) | fg_color;
+
+    if (c == '\n') {
+        cursor_col = 0;
+        cursor_row++;
+        if (cursor_row >= 25) cursor_row = 24;
+        vga_update_cursor();
+        return;
+    }
+
+    uint16_t value = (color_byte << 8) | c;
+    vga_base[cursor_row * 80 + cursor_col] = value;
+
+    cursor_col++;
+    if (cursor_col >= 80) {
+        cursor_col = 0;
+        cursor_row++;
+        if (cursor_row >= 25) cursor_row = 24;
+    }
+    vga_update_cursor();
+}
+
 // Mainly for handling backspace, goes back a character.
 void vga_back() {
     if (cursor_col > 0) {
