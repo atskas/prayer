@@ -26,6 +26,7 @@ set(SOURCES
         kernel/include/exc.h
         kernel/exc.cpp
         kernel/include/keys.h
+        kernel/keys.cpp
 )
 
 add_executable(prayer ${SOURCES})

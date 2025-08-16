@@ -57,26 +57,28 @@ void idt_init() {
 
 // Keyboard input handler
 extern "C" void irq1_handler() {
-    uint8_t scancode = inb(0x60); // keyboard data port
+    uint8_t scancode = inb(0x60);
     bool released;
-    const char* key = scancode_to_key(scancode, &released);
+    const KeyCode key = scancode_to_key(scancode, &released);
 
-    if (released) return;
-
-    // On shift
-    if (key[0] == 'S' && key[1] == 'h')
-        vga_print("\n");
-    else if (key[0] == 'S' && key[1] == 'p') {
-        vga_print(" ");
-    }
-    else if (key[0] == 'E' && key[1] == 'n') {
-        vga_print("\n");
-    }
-    else {
-        vga_print(key);
+    if (released) {
+        if (key == KEY_LSHIFT || key == KEY_RSHIFT)
+            shift_active = false;
+        return;
     }
 
-    outb(0x20, 0x20); // Tell PIC we're done
+    if (key == KEY_LSHIFT || key == KEY_RSHIFT) {
+        shift_active = true;
+        outb(0x20, 0x20);
+        return;
+    }
+
+    if (key == KEY_BACKSPACE && !released) {
+        vga_back();
+    } else {
+        vga_print(keycode_to_string(key, shift_active));
+    }
+    outb(0x20, 0x20);
 }
 
 // Timer handler

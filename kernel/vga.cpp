@@ -52,7 +52,22 @@ void vga_print(const char* str) {
     }
 }
 
-// For printing hex codes
+// Mainly for handling backspace, goes back a character.
+void vga_back() {
+    if (cursor_col > 0) {
+        cursor_col--;
+    } else if (cursor_row > 0) {
+        cursor_row--;
+        cursor_col = 79;
+    } else {
+        return;
+    }
+
+    uint16_t color_byte = (bg_color << 4) | fg_color;
+    vga_buffer[cursor_row * 80 + cursor_col] = (color_byte << 8) | ' ';
+}
+
+// To print hex codes
 void vga_print_hex(uint32_t val) {
     const char* hex = "0123456789ABCDEF";
     vga_print("0x");
@@ -61,13 +76,6 @@ void vga_print_hex(uint32_t val) {
         buf[0] = hex[(val >> i) & 0xF];
         vga_print(buf);
     }
-}
-
-extern "C" const char* scancode_to_key(uint8_t scancode, bool* released) {
-    *released = scancode & 0x80;
-    uint8_t code = scancode & 0x7F;
-    if (code < 128) return scancode_table[code];
-    return "UNKNOWN";
 }
 
 
