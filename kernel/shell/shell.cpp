@@ -8,6 +8,10 @@
 void shell_loop() {
     char line[128];
 
+    // Print the banner
+    char input[] = "banner";
+    handle_input(input);
+
     while (true) {
         vga_print("> "); // The prompt.
         read_line(line, sizeof(line));
