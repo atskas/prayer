@@ -25,10 +25,12 @@ set(SOURCES
         kernel/include/io.h
         kernel/include/exc.h
         kernel/exc.cpp
-        kernel/include/keys.h
-        kernel/keys.cpp
+        kernel/include/keyboard.h
+        kernel/keyboard.cpp
         kernel/include/pag.h
         kernel/pag.cpp
+        kernel/shell/shell.cpp
+        kernel/include/shell/shell.h
 )
 
 add_executable(prayer ${SOURCES})

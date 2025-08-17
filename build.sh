@@ -3,6 +3,7 @@
 set -e # stops on errors
 
 mkdir -p build
+mkdir -p build/shell
 
 # assemble asm files
 nasm -f elf32 kernel/asm/gdt.asm -o build/gdt.o
@@ -17,12 +18,12 @@ g++ -ffreestanding -m32 -fno-stack-protector -c kernel/panic.cpp -o build/panic.
 g++ -ffreestanding -m32 -fno-stack-protector -c kernel/vga.cpp -o build/vga.o # vga.cpp
 g++ -ffreestanding -m32 -fno-stack-protector -c kernel/inter.cpp -o build/inter.o # inter.cpp
 g++ -ffreestanding -m32 -fno-stack-protector -c kernel/exc.cpp -o build/exc.o # exc.cpp
-g++ -ffreestanding -m32 -fno-stack-protector -c kernel/keys.cpp -o build/keys.o # keys.cpp
-g++ -ffreestanding -m32 -fno-stack-protector -c kernel/keys.cpp -o build/keys.o # keys.cpp
+g++ -ffreestanding -m32 -fno-stack-protector -c kernel/keyboard.cpp -o build/keyboard.o # keyboard.cpp
 g++ -ffreestanding -m32 -fno-stack-protector -c kernel/pag.cpp -o build/pag.o # pag.cpp
+g++ -ffreestanding -m32 -fno-stack-protector -c kernel/shell/shell.cpp -o build/shell/shell.o # shell.cpp
 
 # link everything
-ld -m elf_i386 -n -T linker.ld -o build/kernel.elf build/gdt.o build/boot.o build/inter_asm.o build/exc_asm.o build/pag_asm.o build/kmain.o build/panic.o build/vga.o build/inter.o build/exc.o build/keys.o build/pag.o
+ld -m elf_i386 -n -T linker.ld -o build/kernel.elf build/gdt.o build/boot.o build/inter_asm.o build/exc_asm.o build/pag_asm.o build/kmain.o build/panic.o build/vga.o build/inter.o build/exc.o build/keyboard.o build/pag.o build/shell/shell.o
 
 # move the .elf
 mv build/kernel.elf isodir/boot/kernel.elf

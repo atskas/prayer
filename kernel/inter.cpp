@@ -1,7 +1,7 @@
 #include "../kernel/include/inter.h"
 #include "../kernel/include/vga.h"
 #include "../kernel/include/io.h"
-#include "include/keys.h"
+#include "include/keyboard.h"
 
 // Implemented in `inter_asm.asm`
 extern "C" void irq0_stub();
@@ -58,26 +58,29 @@ void idt_init() {
 // Keyboard input handler
 extern "C" void irq1_handler() {
     uint8_t scancode = inb(0x60);
+
     bool released;
     const KeyCode key = scancode_to_key(scancode, &released);
 
     if (released) {
         if (key == KEY_LSHIFT || key == KEY_RSHIFT)
             shift_active = false;
-        return;
-    }
-
-    if (key == KEY_LSHIFT || key == KEY_RSHIFT) {
-        shift_active = true;
         outb(0x20, 0x20);
         return;
     }
+    if (key == KEY_LSHIFT || key == KEY_RSHIFT)
+        shift_active = true;
 
-    if (key == KEY_BACKSPACE && !released) {
-        vga_back();
+    if (key == KEY_BACKSPACE && keyboard_len > 0) {
+        keyboard_len--;
     } else {
-        vga_print(keycode_to_string(key, shift_active));
+        char c = keycode_to_char(key, shift_active);
+        if (c && keyboard_len < 256) {
+            keyboard_buffer[keyboard_len++] = c;
+        }
     }
+
+
     outb(0x20, 0x20);
 }
 

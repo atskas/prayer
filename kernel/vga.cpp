@@ -1,7 +1,4 @@
 #include "../kernel/include/vga.h"
-#include "../kernel/include/keys.h"
-#include <cstdint>
-
 #include "include/io.h"
 
 volatile uint16_t* vga_base;
