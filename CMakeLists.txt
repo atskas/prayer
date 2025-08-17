@@ -22,7 +22,7 @@ set(SOURCES
         kernel/vga.cpp
         kernel/include/inter.h
         kernel/inter.cpp
-        kernel/include/io.h
+        kernel/include/helper.h
         kernel/include/exc.h
         kernel/exc.cpp
         kernel/include/keyboard.h
@@ -31,6 +31,10 @@ set(SOURCES
         kernel/pag.cpp
         kernel/shell/shell.cpp
         kernel/include/shell/shell.h
+        kernel/shell/commands/command.cpp
+        kernel/include/shell/command.h
+        kernel/shell/commands/echo.cpp
+        kernel/shell/commands/clear.cpp
 )
 
 add_executable(prayer ${SOURCES})

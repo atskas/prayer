@@ -1,5 +1,5 @@
 #include "../kernel/include/vga.h"
-#include "include/io.h"
+#include "include/helper.h"
 
 volatile uint16_t* vga_base;
 static int cursor_row = 0;

@@ -10,6 +10,7 @@ extern "C" void kstart() {
     exc_init();
     idt_init();
     paging_init();
+
     shell_loop();
 
     while(true) asm volatile("hlt");

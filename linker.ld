@@ -31,4 +31,12 @@ SECTIONS {
     *(.bss*)
     *(COMMON)
   }
+
+  /* commands */
+  .commands ALIGN(4) :
+  {
+      __start_commands = .;
+      KEEP(*(.commands))
+      __stop_commands = .;
+  }
 }

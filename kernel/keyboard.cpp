@@ -5,7 +5,7 @@ volatile char keyboard_buffer[KB_BUFFER_SIZE];
 volatile uint32_t keyboard_len = 0;
 
 char get_char_from_buffer() {
-    while (keyboard_len == 0);
+    while (keyboard_len == 0) { vga_print(""); }
     char c = keyboard_buffer[0];
     for (uint32_t i = 1; i < keyboard_len; i++)
         keyboard_buffer[i-1] = keyboard_buffer[i];
