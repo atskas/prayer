@@ -22,3 +22,14 @@ static inline bool streq(const char* a, const char* b) {
     }
     return *a == *b;
 }
+
+// String to integer
+static inline int stoi(const char* str) {
+    int result = 0;
+    for (int i = 0; str[i] != '\0'; i++) {
+        char c = str[i];
+        if (c < '0' || c > '9') break;
+        result = result * 10 + (c - '0');
+    }
+    return result;
+}

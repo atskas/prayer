@@ -36,6 +36,8 @@ set(SOURCES
         kernel/shell/commands/echo.cpp
         kernel/shell/commands/clear.cpp
         kernel/shell/commands/banner.cpp
+        kernel/shell/commands/clear.cpp
+        kernel/shell/commands/help.cpp
 )
 
 add_executable(prayer ${SOURCES})

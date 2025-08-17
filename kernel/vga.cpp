@@ -47,6 +47,22 @@ void vga_set_color(Color fg, Color bg) {
     bg_color = bg;
 }
 
+// Clear the screen
+void vga_clear() {
+    uint16_t color = (bg_color << 4 | fg_color) << 8;
+
+    for (int row = 0; row < 25; row++) {
+        for (int col = 0; col < 80; col++) {
+            vga_base[row * 80 + col] = color | ' ';
+        }
+    }
+
+    cursor_row = 0;
+    cursor_col = 0;
+    vga_update_cursor();
+}
+
+
 // Print text to the screen
 void vga_print(const char* str) {
     uint8_t color_byte = (bg_color << 4) | fg_color;
