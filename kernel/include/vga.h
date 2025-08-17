@@ -14,6 +14,9 @@ void vga_init();
 // Update the blinking cursor's position
 void vga_update_cursor();
 
+// Shift all lines up.
+void vga_scroll();
+
 // Print text to the screen
 void vga_print(const char* str);
 

@@ -28,6 +28,19 @@ void vga_update_cursor() {
     outb(0x3D5, (pos >> 8) & 0xFF);
 }
 
+void vga_scroll() {
+    uint16_t blank = (bg_color << 4 | fg_color) << 8 | ' ';
+    for (int row = 1; row < 25; row++) {
+        for (int col = 0; col < 80; col++) {
+            vga_base[(row - 1) * 80 + col] = vga_base[row * 80 + col];
+        }
+    }
+    for (int col = 0; col < 80; col++) {
+        vga_base[24 * 80 + col] = blank;
+    }
+    cursor_row = 24;
+}
+
 // Sets the background and foreground color
 void vga_set_color(Color fg, Color bg) {
     fg_color = fg;
@@ -45,7 +58,7 @@ void vga_print(const char* str) {
             cursor_col = 0;
             cursor_row++;
             if (cursor_row >= 25) {
-                cursor_row = 24; // Temporarily clamp
+                vga_scroll();
             }
             vga_update_cursor();
             continue;
@@ -59,7 +72,7 @@ void vga_print(const char* str) {
             cursor_col = 0;
             cursor_row++;
             if (cursor_row >= 25) {
-                cursor_row = 24; // Temporarily clamp
+                vga_scroll();
             }
         }
         vga_update_cursor();
