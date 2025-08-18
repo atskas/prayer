@@ -13,6 +13,8 @@ public:
         vga_print("fillc <char> - Fills the screen with a specified character.\n");
         vga_print("uptime - Prints the time elapsed since boot in seconds and milliseconds.\n");
         vga_print("help - This very screen.\n");
+        vga_print("shutdown - Shuts down the computer.\n");
+        vga_print("reboot - Reboots the computer.\n");
     }
 };
 

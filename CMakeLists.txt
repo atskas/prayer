@@ -41,6 +41,8 @@ set(SOURCES
         kernel/include/time.h
         kernel/time.cpp
         kernel/shell/commands/uptime.cpp
+        kernel/shell/commands/shutdown.cpp
+        kernel/shell/commands/shutdown.cpp
 )
 
 add_executable(prayer ${SOURCES})
