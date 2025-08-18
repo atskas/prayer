@@ -35,27 +35,43 @@ static inline int stoi(const char* str) {
 }
 
 // Integer to string
-inline void itos(uint32_t value, char* buf) {
-    int i = 0;
+inline void itos(int32_t value, char* buf) {
     if (value == 0) {
         buf[0] = '0';
-        buf[1] = 0;
+        buf[1] = '\0';
         return;
     }
 
+    char temp[12];
+    int i = 0;
+    bool negative = false;
+
+    if (value < 0) {
+        negative = true;
+        if (value == INT32_MIN) {
+            value = INT32_MAX;
+        } else {
+            value = -value;
+        }
+    }
+
     while (value > 0) {
-        buf[i++] = '0' + (value % 10);
+        temp[i++] = '0' + (value % 10);
         value /= 10;
     }
 
-    buf[i] = 0;
-
-    // reverse string
-    for (int j = 0; j < i / 2; j++) {
-        char tmp = buf[j];
-        buf[j] = buf[i - j - 1];
-        buf[i - j - 1] = tmp;
+    if (negative && temp[0] == '7') {
+        temp[0] = '8';
     }
+
+    if (negative) {
+        temp[i++] = '-';
+    }
+
+    for (int j = 0; j < i; j++) {
+        buf[j] = temp[i - j - 1];
+    }
+    buf[i] = '\0';
 }
 
 

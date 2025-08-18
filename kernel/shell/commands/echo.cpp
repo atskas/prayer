@@ -8,6 +8,7 @@ public:
     void execute(int argc, const char **argv) override {
         if (argc > 1 && streq(argv[1], "help")) {
             vga_print("Mimics anything right after the command name.\n");
+            vga_print("Available operations: add, subtract, divide\n");
             vga_print("Usage: echo <args...>\n");
             return;
         }

@@ -11,6 +11,7 @@ public:
         vga_print("banner - Displays the shell's banner.\n");
         vga_print("clear - Clears the screen.\n");
         vga_print("fillc <char> - Fills the screen with a specified character.\n");
+        vga_print("math - Mathematical operations like add, subtract, multiply, divide.\n");
         vga_print("uptime - Prints the time elapsed since boot in seconds and milliseconds.\n");
         vga_print("help - This very screen.\n");
         vga_print("shutdown - Shuts down the computer.\n");
