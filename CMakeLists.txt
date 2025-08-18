@@ -38,6 +38,9 @@ set(SOURCES
         kernel/shell/commands/banner.cpp
         kernel/shell/commands/clear.cpp
         kernel/shell/commands/help.cpp
+        kernel/include/time.h
+        kernel/time.cpp
+        kernel/shell/commands/uptime.cpp
 )
 
 add_executable(prayer ${SOURCES})

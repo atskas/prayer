@@ -24,6 +24,7 @@ g++ -ffreestanding -m32 -fno-stack-protector -fno-rtti -fno-exceptions -c kernel
 g++ -ffreestanding -m32 -fno-stack-protector -fno-rtti -fno-exceptions -c kernel/keyboard.cpp -o build/keyboard.o # keyboard.cpp
 g++ -ffreestanding -m32 -fno-stack-protector -fno-rtti -fno-exceptions -c kernel/pag.cpp -o build/pag.o # pag.cpp
 g++ -ffreestanding -m32 -fno-stack-protector -fno-rtti -fno-exceptions -c kernel/shell/shell.cpp -o build/shell/shell.o # shell.cpp
+g++ -ffreestanding -m32 -fno-stack-protector -fno-rtti -fno-exceptions -c kernel/time.cpp -o build/time.o # time.cpp
 
 # commands
 g++ -ffreestanding -m32 -fno-stack-protector -fno-rtti -fno-exceptions -c kernel/shell/commands/echo.cpp -o build/shell/commands/echo.o
@@ -32,9 +33,10 @@ g++ -ffreestanding -m32 -fno-stack-protector -fno-rtti -fno-exceptions -c kernel
 g++ -ffreestanding -m32 -fno-stack-protector -fno-rtti -fno-exceptions -c kernel/shell/commands/color.cpp -o build/shell/commands/color.o
 g++ -ffreestanding -m32 -fno-stack-protector -fno-rtti -fno-exceptions -c kernel/shell/commands/help.cpp -o build/shell/commands/help.o
 g++ -ffreestanding -m32 -fno-stack-protector -fno-rtti -fno-exceptions -c kernel/shell/commands/fillc.cpp -o build/shell/commands/fillc.o
+g++ -ffreestanding -m32 -fno-stack-protector -fno-rtti -fno-exceptions -c kernel/shell/commands/uptime.cpp -o build/shell/commands/uptime.o
 
 # link everything
-ld -m elf_i386 -n -T linker.ld -o build/kernel.elf build/gdt.o build/boot.o build/inter_asm.o build/exc_asm.o build/pag_asm.o build/kmain.o build/panic.o build/vga.o build/inter.o build/exc.o build/keyboard.o build/pag.o build/shell/shell.o build/shell/commands/echo.o build/shell/commands/banner.o build/shell/commands/clear.o build/shell/commands/color.o build/shell/commands/help.o build/shell/commands/fillc.o
+ld -m elf_i386 -n -T linker.ld -o build/kernel.elf build/gdt.o build/boot.o build/inter_asm.o build/exc_asm.o build/pag_asm.o build/kmain.o build/panic.o build/vga.o build/inter.o build/exc.o build/keyboard.o build/pag.o build/shell/shell.o build/shell/commands/echo.o build/shell/commands/banner.o build/shell/commands/clear.o build/shell/commands/color.o build/shell/commands/help.o build/shell/commands/fillc.o build/time.o build/shell/commands/uptime.o
 
 # move the .elf
 mv build/kernel.elf isodir/boot/kernel.elf

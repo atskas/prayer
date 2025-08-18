@@ -2,6 +2,7 @@
 #include "include/vga.h"
 #include "include/inter.h"
 #include "include/pag.h"
+#include "include/time.h"
 #include "include/shell/shell.h"
 
 // Entry point
@@ -10,6 +11,7 @@ extern "C" void kstart() {
     exc_init();
     idt_init();
     paging_init();
+    pit_init(100);
 
     shell_loop();
 

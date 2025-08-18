@@ -2,6 +2,7 @@
 #include "../kernel/include/vga.h"
 #include "../kernel/include/helper.h"
 #include "include/keyboard.h"
+#include "include/time.h"
 
 // Implemented in `inter_asm.asm`
 extern "C" void irq0_stub();
@@ -91,6 +92,7 @@ extern "C" void irq1_handler() {
 
 // Timer handler
 extern "C" void irq0_handler() {
+    pit_tick();
     outb(0x20, 0x20); // Tell PIC we're done
 }
 

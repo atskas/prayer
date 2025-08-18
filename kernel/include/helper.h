@@ -33,3 +33,29 @@ static inline int stoi(const char* str) {
     }
     return result;
 }
+
+// Integer to string
+inline void itos(uint32_t value, char* buf) {
+    int i = 0;
+    if (value == 0) {
+        buf[0] = '0';
+        buf[1] = 0;
+        return;
+    }
+
+    while (value > 0) {
+        buf[i++] = '0' + (value % 10);
+        value /= 10;
+    }
+
+    buf[i] = 0;
+
+    // reverse string
+    for (int j = 0; j < i / 2; j++) {
+        char tmp = buf[j];
+        buf[j] = buf[i - j - 1];
+        buf[i - j - 1] = tmp;
+    }
+}
+
+
