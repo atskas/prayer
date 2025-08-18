@@ -62,7 +62,6 @@ void vga_clear() {
     vga_update_cursor();
 }
 
-
 // Print text to the screen
 void vga_print(const char* str) {
     uint8_t color_byte = (bg_color << 4) | fg_color;
