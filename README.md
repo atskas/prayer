@@ -1,7 +1,7 @@
 # prayer O.S.
 An attempt at a minimalist bare metal VGA text mode operating system.
 
-<img width="657" height="327" alt="prayer" src="https://github.com/user-attachments/assets/838463c1-4745-4d85-9212-8cd4673a6b61" />
+<img width="671" height="348" alt="Screenshot_20250819_143732" src="https://github.com/user-attachments/assets/fe687cf6-770b-4f41-aa6e-b951ee62ffaf" />
 
 > Main banner & available commands.
 
