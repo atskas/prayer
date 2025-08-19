@@ -7,53 +7,28 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 enable_language(ASM_NASM)
 
-set(SOURCES
-        kernel/asm/boot.asm
-        kernel/kmain.cpp
-        linker.ld
-        kernel/include/panic.h
-        kernel/panic.cpp
-        kernel/vga/vga_buffer.cpp
-        kernel/include/vga_buffer.h
-        kernel/include/vga_color.h
-        kernel/include/vga_color.h
-        kernel/include/vga.h
-        kernel/include/color.h
-        kernel/vga.cpp
-        kernel/include/inter.h
-        kernel/inter.cpp
-        kernel/include/helper.h
-        kernel/include/exc.h
-        kernel/exc.cpp
-        kernel/include/keyboard.h
-        kernel/keyboard.cpp
-        kernel/include/pag.h
-        kernel/pag.cpp
-        kernel/shell/shell.cpp
-        kernel/include/shell/shell.h
-        kernel/shell/commands/command.cpp
-        kernel/include/shell/command.h
-        kernel/shell/commands/echo.cpp
-        kernel/shell/commands/clear.cpp
-        kernel/shell/commands/banner.cpp
-        kernel/shell/commands/clear.cpp
-        kernel/shell/commands/help.cpp
-        kernel/include/time.h
-        kernel/time.cpp
-        kernel/shell/commands/uptime.cpp
-        kernel/shell/commands/shutdown.cpp
-        kernel/shell/commands/shutdown.cpp
+file(GLOB_RECURSE KERNEL_SOURCES
+        kernel/*.cpp
+        kernel/*.c
+        kernel/asm/*.asm
 )
 
-add_executable(prayer ${SOURCES})
+add_executable(prayer ${KERNEL_SOURCES})
 
 target_compile_options(prayer PRIVATE
-        $<$<COMPILE_LANGUAGE:CXX>:-ffreestanding -fno-exceptions -fno-rtti -m64>
-        $<$<COMPILE_LANGUAGE:ASM_NASM>:-f elf64>
+        $<$<COMPILE_LANGUAGE:CXX>:-ffreestanding -fno-exceptions -fno-rtti -m32>
+        $<$<COMPILE_LANGUAGE:ASM_NASM>:-f elf32>
 )
 
 target_link_options(prayer PRIVATE
         -T${CMAKE_SOURCE_DIR}/linker.ld
         -nostdlib
-        -e _start
+        -e kmain
 )
+
+add_custom_target(iso ALL
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/prayer ${CMAKE_SOURCE_DIR}/isodir/boot/kernel.elf
+        COMMAND grub-mkrescue -o ${CMAKE_SOURCE_DIR}/prayer.iso ${CMAKE_SOURCE_DIR}/isodir
+        DEPENDS prayer
+)
+

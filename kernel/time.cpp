@@ -26,3 +26,12 @@ uint32_t ms_since_boot() {
 uint32_t s_since_boot() {
     return ticks / pit_frequency;
 }
+
+// Wait for milliseconds
+void wait_ms(uint32_t ms) {
+    uint32_t start = ticks;
+    uint32_t wait_ticks = ms * pit_frequency / 1000;
+    while ((ticks - start) < wait_ticks) {
+        asm volatile("hlt");
+    }
+}
