@@ -12,9 +12,6 @@ An attempt at a minimalist bare metal VGA text mode operating system.
 - There you go! As long as you haven't tampered with anything, it should build `prayer.iso` in the project directory.
 
 ### Windows
-- There is currently no build support for windows.
-
-> I am planning on ditching the old `build.sh` file and using something like CMake, as I should have.
-> This means possible Windows support for building, too!
+- There is currently no simple build support for windows, you'll have to do it yourself.
 
 
