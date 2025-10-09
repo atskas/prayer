@@ -29,6 +29,12 @@ ld -m elf_i386 -n -T linker.ld -o build/kernel.elf "${objs[@]}"
 mv build/kernel.elf isodir/boot/kernel.elf
 
 # recreate iso, overwrite old prayer.iso
-grub-mkrescue -o prayer.iso isodir
+grub-mkrescue \
+  --directory=/usr/lib/grub/i386-pc \
+  --output=prayer.iso \
+  isodir \
+  --modules="biosdisk iso9660 multiboot multiboot2 normal vbe vga video_bochs video_cirrus gfxterm all_video"
+
+mv prayer.iso isodir/
 
 echo "build complete"
