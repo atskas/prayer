@@ -3,6 +3,7 @@
 #include "include/inter.h"
 #include "include/pag.h"
 #include "include/time.h"
+#include "include/graphics/graphics.h"
 
 // Temporarily held here (probably)
 struct multiboot2_tag {
@@ -26,12 +27,17 @@ extern "C" void kstart(void* mb_info) {
     auto* tag = (multiboot2_tag*)((uint8_t*)mb_info + 8);
     while(tag->type != 0) {
         if(tag->type == 8) {
-            uint32_t* fb = (uint32_t*)tag->framebuffer.addr;
-            fb[0] = 0xFFFF00FF;
+            graphics::framebuffer = (uint32_t*)tag->framebuffer.addr;
+            graphics::pitch = tag->framebuffer.pitch;
+            graphics::width = tag->framebuffer.width;
+            graphics::height = tag->framebuffer.height;
             break;
         }
         tag = (multiboot2_tag*)((uint8_t*)tag + ((tag->size + 7) & ~7));
     }
+
+    graphics::putp(0, 0, 0xFFFFFFFF);
+    graphics::draw_rect(50, 50, 50, 50, 0xFFFFFFFF);
 
     exc_init();
     idt_init();
