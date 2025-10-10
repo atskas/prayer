@@ -1,9 +1,10 @@
 #include "include/exc.h"
 #include "include/vga.h"
 #include "include/inter.h"
-#include "include/pag.h"
 #include "include/time.h"
 #include "include/graphics/graphics.h"
+#include "include/graphics/ui/gui.h"
+#include "include/graphics/ui/widget.h"
 #include "include/input/mouse.h"
 
 // Temporarily held here (probably)
@@ -40,6 +41,26 @@ extern "C" void kstart(void* mb_info) {
     exc_init();
     idt_init();
     pit_init(100);
+
+    // test button
+    Widget* tb = gui::create_widget(100, 100, 120, 40);
+
+    while (true) {
+        gui::handle_mouse_event(mouse::cursor_x, mouse::cursor_y, mouse::mouse_button_pressed(LEFT));
+
+        // test button color handling
+        tb->color = 0xFFFFFF;
+        if (tb->pressed)
+            tb->color = 0xFFFFFF00;
+        else if (tb->hovered)
+            tb->color = 0xFFAAAAAA;
+        else
+            tb->color = 0xFFFFFFFF;
+
+        // draw the rectangle with the properties
+        graphics::draw_rect(tb->x, tb->y, tb->w, tb->h, tb->color);
+        mouse::draw_cursor(); // draw the cursor
+    }
 
     while(true) asm volatile("hlt");
 }

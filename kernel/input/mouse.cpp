@@ -9,12 +9,27 @@ namespace mouse {
     int32_t cursor_x = 100;
     int32_t cursor_y = 100;
 
-    uint32_t cursor_pixel = 0;
-    int32_t last_x = cursor_x;
-    int32_t last_y = cursor_y;
+    uint32_t cursor_pixel;
+    int32_t last_x = cursor_x; // Previous X
+    int32_t last_y = cursor_y; // Previous Y
 
     bool mouse_button_pressed(MouseButton button) {
         return mouse_buttons[button];
+    }
+
+    void draw_cursor() {
+        // restore pixel under previous cursor position
+        graphics::putp(last_x, last_y, cursor_pixel);
+
+        // save pixel under new cursor
+        cursor_pixel = graphics::getp(cursor_x, cursor_y);
+
+        // draw cursor on top
+        graphics::putp(cursor_x, cursor_y, 0xFFFFFFFF);
+
+        // update last position
+        last_x = cursor_x;
+        last_y = cursor_y;
     }
 
     void handle_mouse_packet() {
@@ -51,16 +66,6 @@ namespace mouse {
                 if (cursor_y < 0) cursor_y = 0;
                 if(cursor_y >= (int32_t)graphics::height) cursor_y = graphics::height - 1;
 
-                // save pixel under new cursor position
-                cursor_pixel = graphics::getp(cursor_x, cursor_y);
-
-                // draw cursor
-                graphics::putp(cursor_x, cursor_y, 0xFFFFFFFF);
-
-                if (!mouse_button_pressed(MouseButton::LEFT))
-                    graphics::putp(last_x, last_y, 0);
-                last_x = cursor_x;
-                last_y = cursor_y;
                 break;
         }
     }
