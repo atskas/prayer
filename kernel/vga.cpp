@@ -4,8 +4,8 @@
 volatile uint16_t* vga_base;
 static int cursor_row = 0;
 static int cursor_col = 0;
-static Color fg_color;
-static Color bg_color;
+static VGAColor fg_color;
+static VGAColor bg_color;
 
 // Override the VGA base
 void vga_override(void* new_base) {
@@ -42,7 +42,7 @@ void vga_scroll() {
 }
 
 // Sets the background and foreground color
-void vga_set_color(Color fg, Color bg) {
+void vga_set_color(VGAColor fg, VGAColor bg) {
     fg_color = fg;
     bg_color = bg;
 }

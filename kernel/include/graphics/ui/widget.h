@@ -6,7 +6,7 @@ struct Widget {
     int x, y, w, h;
     bool visible;
     bool hovered, pressed;
-    uint32_t color;
+    graphics::PixelColor color;
     void (*draw)(Widget* self);
     void (*on_click)(Widget* self);
     void (*on_release)(Widget* self);

@@ -49,13 +49,13 @@ extern "C" void kstart(void* mb_info) {
         gui::handle_mouse_event(mouse::cursor_x, mouse::cursor_y, mouse::mouse_button_pressed(LEFT));
 
         // test button color handling
-        tb->color = 0xFFFFFF;
+        tb->color = graphics::WHITE;
         if (tb->pressed)
-            tb->color = 0xFFFFFF00;
+            tb->color = graphics::YELLOW;
         else if (tb->hovered)
-            tb->color = 0xFFAAAAAA;
+            tb->color = graphics::GRAY;
         else
-            tb->color = 0xFFFFFFFF;
+            tb->color = graphics::WHITE;
 
         // draw the rectangle with the properties
         graphics::draw_rect(tb->x, tb->y, tb->w, tb->h, tb->color);

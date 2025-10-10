@@ -20,7 +20,7 @@ public:
 
         int fg = stoi(argv[1]);
         int bg = stoi(argv[2]);
-        vga_set_color((Color)fg, (Color)bg);
+        vga_set_color((VGAColor)fg, (VGAColor)bg);
     }
 };
 

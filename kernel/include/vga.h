@@ -1,9 +1,27 @@
 #pragma once
 #include <cstdint>
 
-#include "color.h"
-
 extern volatile uint16_t* vga_base;
+
+// Enum for simplified text mode color use.
+enum VGAColor {
+    BLACK = 0,
+    BLUE = 1,
+    GREEN = 2,
+    CYAN = 3,
+    RED = 4,
+    MAGENTA = 5,
+    BROWN = 6,
+    LIGHT_GRAY = 7,
+    DARK_GRAY = 8,
+    LIGHT_BLUE = 9,
+    LIGHT_GREEN = 10,
+    LIGHT_CYAN = 11,
+    LIGHT_RED = 12,
+    LIGHT_MAGENTA = 13,
+    YELLOW = 14,
+    WHITE = 15,
+};
 
 // Override the VGA base
 void vga_override(void* new_base);
@@ -36,5 +54,5 @@ void vga_set_cursor(int row, int col);
 void vga_clear();
 
 // Set the text color
-void vga_set_color(Color fg, Color bg);
+void vga_set_color(VGAColor fg, VGAColor bg);
 

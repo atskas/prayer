@@ -9,7 +9,7 @@ namespace mouse {
     int32_t cursor_x = 100;
     int32_t cursor_y = 100;
 
-    uint32_t cursor_pixel;
+    graphics::PixelColor cursor_pixel;
     int32_t last_x = cursor_x; // Previous X
     int32_t last_y = cursor_y; // Previous Y
 
@@ -22,10 +22,10 @@ namespace mouse {
         graphics::putp(last_x, last_y, cursor_pixel);
 
         // save pixel under new cursor
-        cursor_pixel = graphics::getp(cursor_x, cursor_y);
+        cursor_pixel = (graphics::PixelColor)graphics::getp(cursor_x, cursor_y);
 
         // draw cursor on top
-        graphics::putp(cursor_x, cursor_y, 0xFFFFFFFF);
+        graphics::putp(cursor_x, cursor_y, graphics::WHITE);
 
         // update last position
         last_x = cursor_x;
