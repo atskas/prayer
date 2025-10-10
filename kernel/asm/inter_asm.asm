@@ -2,10 +2,12 @@ bits 32
 
 global irq1_stub
 global irq0_stub
+global irq12_stub
 global load_idt
 
 extern irq0_handler
 extern irq1_handler
+extern irq12_handler
 
 ; IRQ0 stub (timer)
 irq0_stub:
@@ -25,6 +27,17 @@ irq1_stub:
     mov al, 0x20
     out 0x20, al
     iretd
+
+; IRQ12 stub (mouse)
+irq12_stub:
+    pusha
+    call irq12_handler
+    popa
+    mov al, 0x20
+    out 0xA0, al
+    out 0x20, al
+    iretd
+
 
 ; load_idt, called from C++ with pointer to IDTPtr
 load_idt:

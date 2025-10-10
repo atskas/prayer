@@ -1,6 +1,11 @@
 #include "../include/graphics/graphics.h"
 
 namespace graphics {
+    uint32_t* framebuffer = nullptr;
+    uint32_t width = 0;
+    uint32_t height = 0;
+    uint32_t pitch = 0;
+
     void putp(uint32_t x, uint32_t y, uint32_t color) {
         if(!framebuffer) return;
 

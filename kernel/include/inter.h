@@ -1,6 +1,5 @@
 #pragma once
 #include <cstdint>
-#include <bits/stdint-uintn.h>
 
 void idt_init();
 

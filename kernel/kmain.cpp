@@ -4,6 +4,7 @@
 #include "include/pag.h"
 #include "include/time.h"
 #include "include/graphics/graphics.h"
+#include "include/input/mouse.h"
 
 // Temporarily held here (probably)
 struct multiboot2_tag {
@@ -36,12 +37,8 @@ extern "C" void kstart(void* mb_info) {
         tag = (multiboot2_tag*)((uint8_t*)tag + ((tag->size + 7) & ~7));
     }
 
-    graphics::putp(0, 0, 0xFFFFFFFF);
-    graphics::draw_rect(50, 50, 50, 50, 0xFFFFFFFF);
-
     exc_init();
     idt_init();
-    paging_init();
     pit_init(100);
 
     while(true) asm volatile("hlt");

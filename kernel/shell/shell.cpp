@@ -1,7 +1,7 @@
 #include "../include/shell/shell.h"
 #include "../include/helper.h"
 #include "../include/vga.h"
-#include "../include/keyboard.h"
+#include "../include/input/keyboard.h"
 
 #define MAX_ARGS 20
 

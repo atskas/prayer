@@ -1,5 +1,5 @@
-#include "include/keyboard.h"
-#include "include/vga.h"
+#include "../include/input/keyboard.h"
+#include "../include/vga.h"
 
 volatile char keyboard_buffer[KB_BUFFER_SIZE];
 volatile uint32_t keyboard_len = 0;

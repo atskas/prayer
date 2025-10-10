@@ -1,12 +1,15 @@
 #include "../kernel/include/inter.h"
 #include "../kernel/include/vga.h"
 #include "../kernel/include/helper.h"
-#include "include/keyboard.h"
+#include "include/input/keyboard.h"
 #include "include/time.h"
+#include "include/graphics/graphics.h"
+#include "include/input/mouse.h"
 
 // Implemented in `inter_asm.asm`
 extern "C" void irq0_stub();
 extern "C" void irq1_stub();
+extern "C" void irq12_stub();
 extern "C" void load_idt(IDTPtr*);
 
 static IDTEntry idt[256]; // IDT Array
@@ -20,6 +23,7 @@ void set_idt_entry(int vector, uint32_t handler, uint16_t selector, uint8_t type
     idt[vector].offset_high = (handler >> 16) & 0xFFFF;
 }
 
+// This entire function needs cleanup, TODO
 void idt_init() {
     idt_ptr.limit = sizeof(idt) - 1;
     idt_ptr.base = (uint32_t)&idt;
@@ -29,6 +33,9 @@ void idt_init() {
 
     // Keyboard IRQ1
     set_idt_entry(33, (uint32_t)irq1_stub, 0x08, 0x8E);
+
+    // Mouse IRQ12
+    set_idt_entry(44, (uint32_t)irq12_stub, 0x08, 0x8E);
 
     load_idt(&idt_ptr);
 
@@ -48,10 +55,34 @@ void idt_init() {
     outb(0x21, 0x01);
     outb(0xA1, 0x01);
 
-    uint8_t mask = inb(0x21); // Read current mask
-    mask &= ~0x01; // Clear bit to allow IRQ0
-    mask &= ~0x02; // Clear bit to allow IRQ1
+    uint8_t mask = inb(0x21); // master PIC mask
+    mask &= ~0x01; // unmask IRQ0
+    mask &= ~0x02; // unmask IRQ1
+    mask &= ~0x04; // unmask irq2 (lets slave PIC through)
     outb(0x21, mask);
+
+    mask = inb(0xA1); // slave PIC mask
+    mask &= ~(1 << 4); // unmask IRQ12
+    outb(0xA1, mask);
+
+    outb(0x64, 0xA8); // enable mouse port
+    outb(0x64, 0x20); // tell controller to read command byte
+    uint8_t status = inb(0x60);
+
+    status |= 0x03; // bit 0 = keyboard IRQ, bit 1 = mouse IRQ
+    outb(0x64, 0x60); // tell controller we’re writing command byte
+    outb(0x60, status);
+
+    // Reset the mouse
+    outb(0x64, 0xD4);
+    outb(0x60, 0xFF);
+    while (inb(0x60) != 0xFA) {} // ACK
+    while (inb(0x60) != 0xAA) {} // Self-test pass
+
+    // Enable data reporting
+    outb(0x64, 0xD4);
+    outb(0x60, 0xF4);
+    while (inb(0x60) != 0xFA) {} // ACK
 
     asm volatile("sti"); // Enable global interrupts
 }
@@ -87,12 +118,20 @@ extern "C" void irq1_handler() {
     }
 
 
-    outb(0x20, 0x20);
+    outb(0x20, 0x20); // Tell PIC we're done
 }
 
 // Timer handler
 extern "C" void irq0_handler() {
     pit_tick();
     outb(0x20, 0x20); // Tell PIC we're done
+}
+
+// Mouse handler
+extern "C" void irq12_handler() {
+    mouse::handle_mouse_packet();
+
+    outb(0xA0, 0x20); // Tell slave PIC we're done
+    outb(0x20, 0x20); // Tell master PIC we're done
 }
 
