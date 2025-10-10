@@ -10,9 +10,16 @@ namespace graphics {
         if(!framebuffer) return;
 
         uint8_t* fb = (uint8_t*)framebuffer;
-
         uint8_t* pixel = fb + y * pitch + x * 4;
         *(uint32_t*)pixel = color;
+    }
+
+    uint32_t getp(uint32_t x, uint32_t y) {
+        if (!framebuffer) return 0;
+
+        uint8_t* fb = (uint8_t*)framebuffer;
+        uint8_t* pixel = fb + y * pitch + x * 4;
+        return *(uint32_t*)pixel;
     }
 
     void draw_rect(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t color) {

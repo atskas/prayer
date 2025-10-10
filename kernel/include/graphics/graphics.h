@@ -8,5 +8,6 @@ namespace graphics {
     extern uint32_t pitch;
 
     void putp(uint32_t x, uint32_t y, uint32_t color);
+    uint32_t getp(uint32_t x, uint32_t y);
     void draw_rect(uint32_t x, uint32_t y, uint32_t w, uint32_t h, uint32_t color);
 }
