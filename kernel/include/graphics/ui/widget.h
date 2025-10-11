@@ -1,6 +1,7 @@
 #pragma once
 
 #define MAX_WIDGETS 64
+#define MAX_Z 255
 
 enum WidgetEvent {
     CLICK,
@@ -12,7 +13,7 @@ struct Widget {
     int x, y, w, h;
     bool visible;
     bool hovered, pressed;
-    int z_index;
+    uint16_t z_index;
     graphics::PixelColor color;
     void (*draw)(Widget* self);
     void (*on_event)(Widget* self, WidgetEvent event);

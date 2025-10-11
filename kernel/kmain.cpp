@@ -44,21 +44,30 @@ extern "C" void kstart(void* mb_info) {
 
     graphics::boot_screen();
 
-    // test button
-    Widget* tb = gui::create_widget(graphics::width / 2, graphics::height / 2, 120, 40);
+    graphics::clear(graphics::BLUE);
 
-    // test button color handling
-    tb->on_update = [](Widget* w){
-        if(w->pressed)
-            w->color = graphics::YELLOW;
-        else if(w->hovered)
-            w->color = graphics::GRAY;
-        else
-            w->color = graphics::WHITE;
+    uint32_t taskbar_y = graphics::height - 30;
+    uint32_t taskbar_height = 30;
+
+    Widget* taskbar = gui::create_widget(0, taskbar_y, graphics::width, taskbar_height);
+    taskbar->z_index = 100;
+    taskbar->draw = [](Widget* w) {
+        graphics::draw_rect(w->x, w->y, w->w, w->h, graphics::YELLOW);
     };
 
-    // draw the rectangle with the properties
-    tb->draw = [](Widget* w) {
+    Widget* box = gui::create_widget(0, taskbar_y, 25, taskbar_height);
+    box->z_index = 255;
+    box->on_update = [](Widget* w) {
+        if (w->pressed) {
+            w->color = graphics::GREEN;
+        } else if (w->hovered) {
+            w->color = graphics::BLUE;
+        } else {
+            w->color = graphics::RED;
+        }
+    };
+
+    box->draw = [](Widget* w) {
         graphics::draw_rect(w->x, w->y, w->w, w->h, w->color);
     };
 

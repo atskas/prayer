@@ -25,9 +25,11 @@ namespace gui {
     }
 
     void draw() {
-        for (int i = 0; i < widget_count; i++) {
-            if (widgets[i].visible && widgets[i].draw) {
-                widgets[i].draw(&widgets[i]);
+        for(int z = 0; z <= MAX_Z; z++) {
+            for(int i = 0; i < widget_count; i++) {
+                Widget* w = &widgets[i];
+                if(w->visible && w->draw && w->z_index == z)
+                    w->draw(w);
             }
         }
     }
