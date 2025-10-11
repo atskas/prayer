@@ -7,9 +7,7 @@ namespace gui {
 
     Widget* create_widget(int x, int y, int w, int h);
 
-    void draw_widgets();
+    void draw();
 
-    void draw_test_button(Widget* wdg);
-
-    void handle_mouse_event(int mouse_x, int mouse_y, bool left_pressed);
+    void update(int mouse_x, int mouse_y, bool left_pressed);
 }

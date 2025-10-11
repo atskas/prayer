@@ -42,23 +42,30 @@ extern "C" void kstart(void* mb_info) {
     idt_init();
     pit_init(100);
 
+    graphics::boot_screen();
+
     // test button
-    Widget* tb = gui::create_widget(100, 100, 120, 40);
+    Widget* tb = gui::create_widget(graphics::width / 2, graphics::height / 2, 120, 40);
+
+    // test button color handling
+    tb->on_update = [](Widget* w){
+        if(w->pressed)
+            w->color = graphics::YELLOW;
+        else if(w->hovered)
+            w->color = graphics::GRAY;
+        else
+            w->color = graphics::WHITE;
+    };
+
+    // draw the rectangle with the properties
+    tb->draw = [](Widget* w) {
+        graphics::draw_rect(w->x, w->y, w->w, w->h, w->color);
+    };
 
     while (true) {
-        gui::handle_mouse_event(mouse::cursor_x, mouse::cursor_y, mouse::mouse_button_pressed(LEFT));
-
-        // test button color handling
-        tb->color = graphics::WHITE;
-        if (tb->pressed)
-            tb->color = graphics::YELLOW;
-        else if (tb->hovered)
-            tb->color = graphics::GRAY;
-        else
-            tb->color = graphics::WHITE;
-
-        // draw the rectangle with the properties
-        graphics::draw_rect(tb->x, tb->y, tb->w, tb->h, tb->color);
+        // ui draw loop
+        gui::update(mouse::cursor_x, mouse::cursor_y, mouse::mouse_button_pressed(LEFT));
+        gui::draw();
         mouse::draw_cursor(); // draw the cursor
     }
 
