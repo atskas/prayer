@@ -27,6 +27,7 @@ ld -m elf_i386 -n -T linker.ld -o build/kernel.elf "${objs[@]}"
 
 # move the .elf
 mv build/kernel.elf isodir/boot/kernel.elf
+rm -f isodir/*.iso # remove previous iso
 
 # recreate iso, overwrite old prayer.iso
 grub-mkrescue \
