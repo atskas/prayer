@@ -55,18 +55,31 @@ extern "C" void kstart(void* mb_info) {
     };
 
     Widget* box = gui::create_widget(0, taskbar_y, 25, taskbar_height);
-    box->z_index = 255;
+    box->z_index = 101;
     box->on_update = [](Widget* w) {
         if (w->pressed) {
             w->color = graphics::GREEN;
         } else if (w->hovered) {
-            w->color = graphics::BLUE;
+            w->color = graphics::GRAY;
         } else {
             w->color = graphics::RED;
         }
     };
 
     box->draw = [](Widget* w) {
+        graphics::draw_rect(w->x, w->y, w->w, w->h, w->color);
+    };
+
+    Widget* rectangle = gui::create_widget(100, 100, 100, 80);
+    rectangle->z_index = 0;
+    rectangle->on_update = [](Widget* w) {
+        if (w->pressed) {
+            w->x = mouse::cursor_x - 20;
+            w->y = mouse::cursor_y - 20;
+        }
+        w->color = graphics::GREEN;
+    };
+    rectangle->draw = [](Widget* w) {
         graphics::draw_rect(w->x, w->y, w->w, w->h, w->color);
     };
 
