@@ -29,7 +29,8 @@ extern "C" void kstart(void* mb_info) {
     auto* tag = (multiboot2_tag*)((uint8_t*)mb_info + 8);
     while(tag->type != 0) {
         if(tag->type == 8) {
-            graphics::framebuffer = (uint32_t*)tag->framebuffer.addr;
+            graphics::hardware_framebuffer = (uint32_t*)tag->framebuffer.addr;
+            graphics::framebuffer = graphics::backbuffer;
             graphics::pitch = tag->framebuffer.pitch;
             graphics::width = tag->framebuffer.width;
             graphics::height = tag->framebuffer.height;
@@ -43,8 +44,6 @@ extern "C" void kstart(void* mb_info) {
     pit_init(100);
 
     graphics::boot_screen();
-
-    graphics::clear(graphics::BLUE);
 
     uint32_t taskbar_y = graphics::height - 30;
     uint32_t taskbar_height = 30;
@@ -72,10 +71,13 @@ extern "C" void kstart(void* mb_info) {
     };
 
     while (true) {
-        // ui draw loop
+        graphics::framebuffer = graphics::backbuffer;
+        graphics::clear(graphics::BLUE);
         gui::update(mouse::cursor_x, mouse::cursor_y, mouse::mouse_button_pressed(LEFT));
         gui::draw();
         mouse::draw_cursor(); // draw the cursor
+
+        graphics::swap_buffers();
     }
 
     while(true) asm volatile("hlt");

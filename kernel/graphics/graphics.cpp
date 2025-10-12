@@ -2,8 +2,12 @@
 
 #include "../include/time.h"
 
+
 namespace graphics {
     uint32_t* framebuffer = nullptr;
+    uint32_t* hardware_framebuffer = nullptr;
+    uint32_t backbuffer_storage[MAX_FB_SIZE];
+    uint32_t* backbuffer = backbuffer_storage;
     uint32_t width = 0;
     uint32_t height = 0;
     uint32_t pitch = 0;
@@ -27,11 +31,15 @@ namespace graphics {
     void clear(PixelColor color) {
         if (!framebuffer) return;
 
-        for (uint32_t y = 0; y < height; y++) {
-            for (uint32_t x = 0; x < width; x++) {
-                putp(x, y, color);
-            }
-        }
+        for (uint32_t i = 0; i < width * height; i++)
+            backbuffer[i] = color;
+    }
+
+    void swap_buffers() {
+        if (!hardware_framebuffer || !backbuffer) return;
+
+        for (uint32_t i = 0; i < width * height; i++)
+            hardware_framebuffer[i] = backbuffer[i];
     }
 
     void draw_rect(uint32_t x, uint32_t y, uint32_t w, uint32_t h, PixelColor color) {
@@ -59,8 +67,11 @@ namespace graphics {
         clear(BLACK);
         draw_cross(center_x, center_y, 48, WHITE);
 
+        swap_buffers();
         wait_ms(2000);
+
         clear(BLACK);
+        swap_buffers();
     }
 
 

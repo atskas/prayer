@@ -1,8 +1,13 @@
 #pragma once
 #include <cstdint>
 
+#define MAX_FB_SIZE (1920*1080)
+
 namespace graphics {
     extern uint32_t* framebuffer;
+    extern uint32_t* backbuffer;
+    extern uint32_t backbuffer_storage[MAX_FB_SIZE];
+    extern uint32_t* hardware_framebuffer;
     extern uint32_t width;
     extern uint32_t height;
     extern uint32_t pitch;
@@ -20,6 +25,7 @@ namespace graphics {
     void putp(uint32_t x, uint32_t y, PixelColor color);
     uint32_t getp(uint32_t x, uint32_t y);
     void clear(PixelColor color);
+    void swap_buffers();
 
     void draw_rect(uint32_t x, uint32_t y, uint32_t w, uint32_t h, PixelColor color); // draw a simple rectangle
     void draw_cross(uint32_t center_x, uint32_t center_y, uint32_t size, PixelColor color); // draw a cross
