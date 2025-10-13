@@ -13,6 +13,7 @@ struct Widget {
     int x, y, w, h;
     bool visible;
     bool hovered, pressed;
+    void* user_data = nullptr;
     uint16_t z_index;
     graphics::PixelColor color;
     void (*draw)(Widget* self);

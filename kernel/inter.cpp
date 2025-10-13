@@ -1,7 +1,5 @@
 #include "../kernel/include/inter.h"
-#include "../kernel/include/vga.h"
 #include "../kernel/include/helper.h"
-#include "include/input/keyboard.h"
 #include "include/time.h"
 #include "include/graphics/graphics.h"
 #include "include/input/mouse.h"
@@ -90,33 +88,6 @@ void idt_init() {
 // Keyboard input handler
 extern "C" void irq1_handler() {
     const uint8_t scancode = inb(0x60);
-
-    bool released;
-    const KeyCode key = scancode_to_key(scancode, &released);
-
-    if (released) {
-        if (key == KEY_LSHIFT || key == KEY_RSHIFT)
-            shift_active = false;
-        outb(0x20, 0x20);
-        return;
-    }
-    if (key == KEY_LSHIFT || key == KEY_RSHIFT)
-        shift_active = true;
-
-    if (key == KEY_BACKSPACE) {
-        if (keyboard_len > 0) {
-            keyboard_len--;
-            keyboard_buffer[keyboard_len] = 0;
-            outb(0x20, 0x20);
-            return;
-        }
-    }
-
-    char c = keycode_to_char(key, shift_active);
-    if (c && keyboard_len < KB_BUFFER_SIZE) {
-        keyboard_buffer[keyboard_len++] = c;
-    }
-
 
     outb(0x20, 0x20); // Tell PIC we're done
 }

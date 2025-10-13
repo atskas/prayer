@@ -18,6 +18,7 @@ namespace gui {
         wdg->visible = true;
         wdg->hovered = false;
         wdg->pressed = false;
+        wdg->user_data = nullptr;
         wdg->draw = 0;
         wdg->on_event = nullptr;
         wdg->on_update = nullptr;

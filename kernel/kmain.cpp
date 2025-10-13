@@ -1,5 +1,4 @@
 #include "include/exc.h"
-#include "include/vga.h"
 #include "include/inter.h"
 #include "include/time.h"
 #include "include/graphics/graphics.h"
@@ -57,7 +56,8 @@ extern "C" void kstart(void* mb_info) {
     Widget* box = gui::create_widget(0, taskbar_y, 25, taskbar_height);
     box->z_index = 101;
     box->on_update = [](Widget* w) {
-        if (w->pressed) {
+        static bool was_pressed = false;
+        if (w->pressed && !was_pressed) {
             w->color = graphics::GREEN;
         } else if (w->hovered) {
             w->color = graphics::GRAY;
@@ -65,7 +65,6 @@ extern "C" void kstart(void* mb_info) {
             w->color = graphics::RED;
         }
     };
-
     box->draw = [](Widget* w) {
         graphics::draw_rect(w->x, w->y, w->w, w->h, w->color);
     };
