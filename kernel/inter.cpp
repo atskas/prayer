@@ -1,6 +1,5 @@
 #include "../kernel/include/inter.h"
 #include "../kernel/include/helper.h"
-#include "include/time.h"
 #include "include/graphics/graphics.h"
 #include "include/input/mouse.h"
 
@@ -81,8 +80,6 @@ void idt_init() {
     outb(0x64, 0xD4);
     outb(0x60, 0xF4);
     while (inb(0x60) != 0xFA) {} // ACK
-
-    asm volatile("sti"); // Enable global interrupts
 }
 
 // Keyboard input handler
@@ -94,7 +91,7 @@ extern "C" void irq1_handler() {
 
 // Timer handler
 extern "C" void irq0_handler() {
-    pit_tick();
+    // pit_tick();
     outb(0x20, 0x20); // Tell PIC we're done
 }
 

@@ -1,6 +1,5 @@
 #include "include/exc.h"
 #include "include/inter.h"
-#include "include/time.h"
 #include "include/graphics/graphics.h"
 #include "include/graphics/ui/gui.h"
 #include "include/graphics/ui/widget.h"
@@ -40,7 +39,7 @@ extern "C" void kstart(void* mb_info) {
 
     exc_init();
     idt_init();
-    pit_init(100);
+    asm volatile("sti"); // Enable global interrupts
 
     graphics::boot_screen();
 

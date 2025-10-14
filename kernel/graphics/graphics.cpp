@@ -82,7 +82,6 @@ namespace graphics {
         draw_cross(center_x, center_y, 48, WHITE);
 
         swap_buffers();
-        wait_ms(2000);
 
         clear(BLACK);
         swap_buffers();
