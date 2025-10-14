@@ -29,6 +29,4 @@ namespace graphics {
     void swap_buffers(); // copy the contents of the backbuffer to the hardware framebuffer
 
     void draw_rect(uint32_t x, uint32_t y, uint32_t w, uint32_t h, PixelColor color); // draw a simple rectangle
-    void draw_cross(uint32_t center_x, uint32_t center_y, uint32_t size, PixelColor color); // draw a Christian cross
-    void boot_screen(); // draw the boot screen
 }

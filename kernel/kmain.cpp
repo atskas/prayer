@@ -41,8 +41,6 @@ extern "C" void kstart(void* mb_info) {
     idt_init();
     asm volatile("sti"); // Enable global interrupts
 
-    graphics::boot_screen();
-
     uint32_t taskbar_y = graphics::height - 30;
     uint32_t taskbar_height = 30;
 

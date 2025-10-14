@@ -9,6 +9,7 @@ namespace mouse {
     int32_t cursor_x = 100;
     int32_t cursor_y = 100;
 
+    // The mouse sprite
     graphics::PixelColor cursor_bitmap[cursor_h][cursor_w] = {
         graphics::BLACK, graphics::BLACK, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT,
         graphics::BLACK, graphics::WHITE, graphics::BLACK, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT,
@@ -19,9 +20,6 @@ namespace mouse {
         graphics::BLACK, graphics::BLACK, graphics::BLACK, graphics::BLACK, graphics::WHITE, graphics::BLACK, graphics::TRANSPARENT, graphics::TRANSPARENT,
         graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::BLACK, graphics::BLACK, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT
     };
-
-
-
 
     bool mouse_button_pressed(MouseButton button) {
         return mouse_buttons[button];
