@@ -9,13 +9,38 @@ namespace mouse {
     int32_t cursor_x = 100;
     int32_t cursor_y = 100;
 
+    graphics::PixelColor cursor_bitmap[cursor_h][cursor_w] = {
+        graphics::BLACK, graphics::BLACK, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT,
+        graphics::BLACK, graphics::WHITE, graphics::BLACK, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT,
+        graphics::BLACK, graphics::WHITE, graphics::WHITE, graphics::BLACK, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT,
+        graphics::BLACK, graphics::WHITE, graphics::WHITE, graphics::WHITE, graphics::BLACK, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT,
+        graphics::BLACK, graphics::WHITE, graphics::WHITE, graphics::WHITE, graphics::WHITE, graphics::BLACK, graphics::TRANSPARENT, graphics::TRANSPARENT,
+        graphics::BLACK, graphics::WHITE, graphics::WHITE, graphics::WHITE, graphics::BLACK, graphics::BLACK, graphics::TRANSPARENT, graphics::TRANSPARENT,
+        graphics::BLACK, graphics::BLACK, graphics::BLACK, graphics::BLACK, graphics::WHITE, graphics::BLACK, graphics::TRANSPARENT, graphics::TRANSPARENT,
+        graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::BLACK, graphics::BLACK, graphics::TRANSPARENT, graphics::TRANSPARENT, graphics::TRANSPARENT
+    };
+
+
+
+
     bool mouse_button_pressed(MouseButton button) {
         return mouse_buttons[button];
     }
 
-    void draw_cursor() {
-        // draw cursor
-        graphics::putp(cursor_x, cursor_y, graphics::WHITE);
+    void draw_cursor(int x_pos, int y_pos) {
+        for (int y = 0; y < cursor_h; y++) {
+            int screen_y = y_pos + y;
+            if (screen_y < 0 || screen_y >= (int)graphics::height) continue;
+
+            for (int x = 0; x < cursor_w; x++) {
+                int screen_x = x_pos + x;
+                if (screen_x < 0 || screen_x >= (int)graphics::width) continue;
+
+                auto c = cursor_bitmap[y][x];
+                if (c != graphics::TRANSPARENT)
+                    graphics::putp(screen_x, screen_y, c);
+            }
+        }
     }
 
     void handle_mouse_packet() {

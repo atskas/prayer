@@ -86,7 +86,7 @@ extern "C" void kstart(void* mb_info) {
         graphics::clear(graphics::BLUE);
         gui::update(mouse::cursor_x, mouse::cursor_y, mouse::mouse_button_pressed(LEFT));
         gui::draw();
-        mouse::draw_cursor(); // draw the cursor
+        mouse::draw_cursor(mouse::cursor_x, mouse::cursor_y); // draw the cursor
 
         graphics::swap_buffers();
     }

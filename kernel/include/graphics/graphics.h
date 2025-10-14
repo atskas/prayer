@@ -20,6 +20,7 @@ namespace graphics {
         RED    = 0xFFFF0000,
         GREEN  = 0xFF00FF00,
         BLUE   = 0xFF0000FF,
+        TRANSPARENT = 0x00000000
     };
 
     void putp(uint32_t x, uint32_t y, PixelColor color); // put a pixel at a given position
