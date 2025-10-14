@@ -63,4 +63,27 @@ namespace graphics {
             }
         }
     }
+
+    void draw_cross(uint32_t center_x, uint32_t center_y, uint32_t size, PixelColor color) {
+        uint32_t half = size / 2;
+
+        // vertical line
+        draw_rect(center_x - 6, center_y - half, 7, size, color);
+
+        // horizontal line
+        draw_rect(center_x - half, center_y - 8, size - 8, 7, color);
+    }
+
+    void boot_screen() {
+        uint32_t center_x = width / 2;
+        uint32_t center_y = height / 2;
+
+        clear(BLACK);
+        draw_cross(center_x, center_y, 48, WHITE);
+
+        swap_buffers();
+
+        clear(BLACK);
+        swap_buffers();
+    }
 }
